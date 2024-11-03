@@ -1,8 +1,8 @@
 package at.aistleitner.ahoiburger.burger.dto
 
-import java.math.BigDecimal
 import at.aistleitner.ahoiburger.burger.entity.Allergen
 import at.aistleitner.ahoiburger.burger.entity.Burger
+import java.math.BigDecimal
 import java.util.*
 
 data class BurgerResponse(
