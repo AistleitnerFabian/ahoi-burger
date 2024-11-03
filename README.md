@@ -4,14 +4,6 @@
 
 **Projektbeschreibung:** Eine Mini-API als Coding Challenge für **Ahoi Kappn**.
 
-## Noch fehlende Features
-
-Die folgenden Features sind in der aktuellen Version noch nicht implementiert, werden jedoch in der Live-Demo verfügbar sein:
-
-- **Suchfunktion:** Möglichkeit, Burger und Getränke nach Namen zu durchsuchen
-- **Filteroptionen:** Abfrage von Burgern und Getränken nach Preisbereich
-- **Containerisierung:** Bereitstellung einer Dockerfile zur einfachen Containerisierung und Deployment der Anwendung
-
 ## Swagger UI
 
 Die API-Dokumentation ist unter folgendem Link verfügbar:
