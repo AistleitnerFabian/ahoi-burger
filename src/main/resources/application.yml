@@ -9,3 +9,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
+application:
+  api-key: "ahoi-burger-secret"
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui

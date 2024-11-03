@@ -1,6 +1,7 @@
 package at.aistleitner.ahoiburger.burger
 
 import at.aistleitner.ahoiburger.TestcontainersConfiguration
+import at.aistleitner.ahoiburger.Testdata
 import at.aistleitner.ahoiburger.burger.entity.Allergen
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +24,9 @@ class BurgerControllerIT @Autowired constructor(
 
     @Test
     fun `GET all burgers - should return a list of burgers`() {
-        mockMvc.get("/burgers")
+        mockMvc.get("/burgers") {
+            header("X-Api-Key", Testdata.API_KEY)
+        }
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -58,11 +61,14 @@ class BurgerControllerIT @Autowired constructor(
                 jsonPath("$[2].allergens[1]") { value(Allergen.GLUTEN.name) }
             }
     }
+
     @Test
     fun `GET burger by ID - should return the specific burger`() {
         val burgerId = UUID.fromString("11111111-1111-1111-1111-111111111111")
 
-        mockMvc.get("/burgers/$burgerId")
+        mockMvc.get("/burgers/$burgerId") {
+            header("X-Api-Key", Testdata.API_KEY)
+        }
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -82,7 +88,9 @@ class BurgerControllerIT @Autowired constructor(
     fun `GET burger by ID not exists - should return 400 BAD REQUEST`() {
         val burgerId = UUID.fromString("00000000-0000-0000-0000-000000000000")
 
-        mockMvc.get("/burgers/$burgerId")
+        mockMvc.get("/burgers/$burgerId") {
+            header("X-Api-Key", Testdata.API_KEY)
+        }
             .andExpect {
                 status { isBadRequest() }
             }

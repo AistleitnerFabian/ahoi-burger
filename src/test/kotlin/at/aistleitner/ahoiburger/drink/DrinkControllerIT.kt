@@ -1,6 +1,7 @@
 package at.aistleitner.ahoiburger.drink
 
 import at.aistleitner.ahoiburger.TestcontainersConfiguration
+import at.aistleitner.ahoiburger.Testdata
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -22,7 +23,9 @@ class DrinkControllerIT @Autowired constructor(
 
     @Test
     fun `GET all drinks - should return a list of drinks`() {
-        mockMvc.get("/drinks")
+        mockMvc.get("/drinks"){
+            header("X-Api-Key", Testdata.API_KEY)
+        }
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -49,7 +52,9 @@ class DrinkControllerIT @Autowired constructor(
     fun `GET drink by ID - should return the specific drink`() {
         val drinkId = UUID.fromString("22222222-2222-2222-2222-222222222222")
 
-        mockMvc.get("/drinks/$drinkId")
+        mockMvc.get("/drinks/$drinkId"){
+            header("X-Api-Key", Testdata.API_KEY)
+        }
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -65,7 +70,9 @@ class DrinkControllerIT @Autowired constructor(
     fun `GET drink by ID not exists - should return 400 BAD REQUEST`() {
         val drinkId = UUID.fromString("00000000-0000-0000-0000-000000000000")
 
-        mockMvc.get("/drinks/$drinkId")
+        mockMvc.get("/drinks/$drinkId"){
+            header("X-Api-Key", Testdata.API_KEY)
+        }
             .andExpect {
                 status { isBadRequest() }
             }
