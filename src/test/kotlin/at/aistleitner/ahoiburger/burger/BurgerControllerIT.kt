@@ -95,4 +95,63 @@ class BurgerControllerIT @Autowired constructor(
                 status { isBadRequest() }
             }
     }
+
+    @Test
+    fun `SEARCH burgers by name - should return burgers matching name`() {
+        mockMvc.get("/burgers/search") {
+            header("X-Api-Key", Testdata.API_KEY)
+            param("name", "Cheeseburger")
+        }
+            .andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                jsonPath("$.length()") { value(1) }
+
+                jsonPath("$[0].name") { value("Cheeseburger") }
+                jsonPath("$[0].description") { value("A classic cheeseburger with melted cheese") }
+                jsonPath("$[0].price") { value(5.99) }
+                jsonPath("$[0].vegetarian") { value(false) }
+                jsonPath("$[0].available") { value(true) }
+            }
+    }
+
+    @Test
+    fun `SEARCH burgers by price range - should return burgers within range`() {
+        mockMvc.get("/burgers/search") {
+            header("X-Api-Key", Testdata.API_KEY)
+            param("minPrice", "6.00")
+            param("maxPrice", "10.00")
+        }
+            .andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                jsonPath("$.length()") { value(2) }
+
+                jsonPath("$[0].name") { value("Veggie Burger") }
+                jsonPath("$[0].price") { value(7.99) }
+
+                jsonPath("$[1].name") { value("Double Bacon Burger") }
+                jsonPath("$[1].price") { value(9.99) }
+            }
+    }
+
+    @Test
+    fun `SEARCH burgers by name and price range - should return filtered results`() {
+        mockMvc.get("/burgers/search") {
+            header("X-Api-Key", Testdata.API_KEY)
+            param("name", "Burger")
+            param("minPrice", "6.00")
+            param("maxPrice", "8.00")
+        }
+            .andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                jsonPath("$.length()") { value(1) }
+
+                jsonPath("$[0].name") { value("Veggie Burger") }
+                jsonPath("$[0].description") { value("A delicious vegetarian option") }
+                jsonPath("$[0].price") { value(7.99) }
+                jsonPath("$[0].vegetarian") { value(true) }
+            }
+    }
 }

@@ -2,16 +2,16 @@ spring:
   application:
     name: ahoiburger
   datasource:
-    url: jdbc:postgresql://localhost:5434/burger
-    username: postgres
-    password: postgres
+    url: ${DB_URL:jdbc:postgresql://localhost:5434/burger}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: none
 
 application:
-  api-key: "ahoi-burger-secret"
+  api-key: ${API_KEY:ahoi-burger-secret}
 
 springdoc:
   api-docs:
