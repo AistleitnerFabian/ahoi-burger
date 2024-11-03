@@ -19,5 +19,6 @@ data class Burger(
     val specialIngredients: List<String> = emptyList(),
 
     @Column(name = "allergens", columnDefinition = "TEXT[]")
+    @Enumerated(EnumType.STRING)
     val allergens: List<Allergen> = emptyList()
 ) : BaseEntity()

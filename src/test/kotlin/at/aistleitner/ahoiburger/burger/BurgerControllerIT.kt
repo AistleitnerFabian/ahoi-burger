@@ -1,6 +1,7 @@
 package at.aistleitner.ahoiburger.burger
 
 import at.aistleitner.ahoiburger.TestcontainersConfiguration
+import at.aistleitner.ahoiburger.burger.entity.Allergen
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -35,7 +36,7 @@ class BurgerControllerIT @Autowired constructor(
                 jsonPath("$[0].available") { value(true) }
                 jsonPath("$[0].specialIngredients[0]") { value("Cheese") }
                 jsonPath("$[0].specialIngredients[1]") { value("Lettuce") }
-                jsonPath("$[0].allergens[0]") { value("Dairy") }
+                jsonPath("$[0].allergens[0]") { value(Allergen.DAIRY.name) }
 
                 jsonPath("$[1].name") { value("Veggie Burger") }
                 jsonPath("$[1].description") { value("A delicious vegetarian option") }
@@ -44,7 +45,7 @@ class BurgerControllerIT @Autowired constructor(
                 jsonPath("$[1].available") { value(true) }
                 jsonPath("$[1].specialIngredients[0]") { value("Avocado") }
                 jsonPath("$[1].specialIngredients[1]") { value("Lettuce") }
-                jsonPath("$[1].allergens[0]") { value("Soy") }
+                jsonPath("$[1].allergens[0]") { value(Allergen.SOY.name) }
 
                 jsonPath("$[2].name") { value("Double Bacon Burger") }
                 jsonPath("$[2].description") { value("A double-patty burger with crispy bacon") }
@@ -53,8 +54,8 @@ class BurgerControllerIT @Autowired constructor(
                 jsonPath("$[2].available") { value(true) }
                 jsonPath("$[2].specialIngredients[0]") { value("Bacon") }
                 jsonPath("$[2].specialIngredients[1]") { value("Cheese") }
-                jsonPath("$[2].allergens[0]") { value("Dairy") }
-                jsonPath("$[2].allergens[1]") { value("Pork") }
+                jsonPath("$[2].allergens[0]") { value(Allergen.DAIRY.name) }
+                jsonPath("$[2].allergens[1]") { value(Allergen.GLUTEN.name) }
             }
     }
     @Test
@@ -73,7 +74,17 @@ class BurgerControllerIT @Autowired constructor(
                 jsonPath("$.available") { value(true) }
                 jsonPath("$.specialIngredients[0]") { value("Cheese") }
                 jsonPath("$.specialIngredients[1]") { value("Lettuce") }
-                jsonPath("$.allergens[0]") { value("Dairy") }
+                jsonPath("$.allergens[0]") { value(Allergen.DAIRY.name) }
+            }
+    }
+
+    @Test
+    fun `GET burger by ID not exists - should return 400 BAD REQUEST`() {
+        val burgerId = UUID.fromString("00000000-0000-0000-0000-000000000000")
+
+        mockMvc.get("/burgers/$burgerId")
+            .andExpect {
+                status { isBadRequest() }
             }
     }
 }
